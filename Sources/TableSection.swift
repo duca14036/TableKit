@@ -34,6 +34,9 @@ open class TableSection {
     open var headerHeight: CGFloat? = nil
     open var footerHeight: CGFloat? = nil
     
+    private var isCollapsible = false
+    open var isCollapsed = true
+    
     open var numberOfRows: Int {
         return rows.count
     }
@@ -42,10 +45,13 @@ open class TableSection {
         return rows.isEmpty
     }
     
-    public init(rows: [Row]? = nil) {
+    public init(rows: [Row]? = nil, isCollapsible: Bool? = nil) {
         
         if let initialRows = rows {
             self.rows.append(contentsOf: initialRows)
+        }
+        if let collapsible = isCollapsible {
+            self.isCollapsible = collapsible
         }
     }
     
@@ -99,6 +105,25 @@ open class TableSection {
     
     open func remove(rowAt index: Int) {
         rows.remove(at: index)
+    }
+    
+    // MARK: - Collapse functions
+    
+    
+    open func toggle() {
+        if self.canCollapse() {
+            self.isCollapsed = !self.isCollapsed
+        }
+    }
+    
+    func canCollapse() -> Bool {
+        return self.isCollapsible && self.numberOfRows > 1
+    }
+    
+    func setCollapsed(flag: Bool = true) {
+        if self.canCollapse() {
+            self.isCollapsed = flag
+        }
     }
     
     // MARK: - deprecated methods -

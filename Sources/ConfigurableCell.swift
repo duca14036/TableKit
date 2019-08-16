@@ -45,3 +45,9 @@ public extension ConfigurableCell where Self: UITableViewCell {
         return nil
     }
 }
+
+public protocol CollapsibleCell {
+    func toggle()
+    func hideToggler(_ flag: Bool)
+    func setCollapsed(_ flag: Bool)
+}

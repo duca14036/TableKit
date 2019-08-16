@@ -16,11 +16,10 @@ class NibCellsController: UITableViewController {
 
         let rows = numbers.map {
             TableRow<NibTableViewCell>(item: $0)
-                .on(.shouldHighlight) { (_) -> Bool in
-                    return false
-                }
         }
         
-        tableDirector.append(rows: rows)
+        let section = TableSection(rows: rows, isCollapsible: true)
+        
+        tableDirector.append(section: section)
     }
 }

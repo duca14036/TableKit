@@ -181,6 +181,10 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard section < sections.count else { return 0 }
         
+        if sections[section].canCollapse() {
+            return sections[section].isCollapsed ? 1 : sections[section].numberOfRows
+        }
+        
         return sections[section].numberOfRows
     }
     
@@ -192,11 +196,21 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: row.reuseIdentifier, for: indexPath)
         
+        if indexPath.row == 0 {
+            if let c = cell as? CollapsibleCell {
+                if sections[indexPath.section].numberOfRows == 1 {
+                    c.hideToggler(true)
+                } else {
+                    c.hideToggler(false)
+                    c.setCollapsed(sections[indexPath.section].isCollapsed)
+                }
+            }
+        
+        }
         if cell.frame.size.width != tableView.frame.size.width {
             cell.frame = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: cell.frame.size.height)
             cell.layoutIfNeeded()
         }
-        
         row.configure(cell)
         invoke(action: .configure, cell: cell, indexPath: indexPath)
         
@@ -277,7 +291,21 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: UITableViewDelegate - actions
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
-        
+        let section = sections[indexPath.section]
+        if section.canCollapse() {
+            if indexPath.row == 0 {
+                section.toggle()
+                if let canCollapse = cell as? CollapsibleCell {
+                    canCollapse.toggle()
+                }
+            
+                tableView.reloadSections([indexPath.section], with: .automatic)
+                if section.isCollapsed == false{
+                    let indexPath2 = IndexPath(row: sections[indexPath.section].rows.count - 1 , section: indexPath.section)
+                    tableView.scrollToRow(at: indexPath2, at: .none, animated: true)
+                }
+            }
+        }
         if invoke(action: .click, cell: cell, indexPath: indexPath) != nil {
             tableView.deselectRow(at: indexPath, animated: true)
         } else {
