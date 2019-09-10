@@ -298,11 +298,16 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
                 if let canCollapse = cell as? CollapsibleCell {
                     canCollapse.toggle()
                 }
-            
                 tableView.reloadSections([indexPath.section], with: .automatic)
+                
+                if let isVisible = tableView.indexPathsForVisibleRows?.contains(indexPath), !isVisible {
+                    tableView.scrollToRow(at: indexPath, at: .none, animated: true)
+                }
                 if section.isCollapsed == false{
                     let indexPath2 = IndexPath(row: sections[indexPath.section].rows.count - 1 , section: indexPath.section)
-                    tableView.scrollToRow(at: indexPath2, at: .none, animated: true)
+                    if let isVisible = tableView.indexPathsForVisibleRows?.contains(indexPath2), !isVisible {
+                        tableView.scrollToRow(at: indexPath2, at: .none, animated: true)
+                    }
                 }
             }
         }
