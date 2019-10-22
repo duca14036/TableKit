@@ -44,8 +44,8 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    public var sectionHeaderTextColor: UIColor?
-    public var sectionFooterTextColor: UIColor?
+    open var sectionHeaderTextColor: UIColor?
+    open var sectionFooterTextColor: UIColor?
     
     open var isEmpty: Bool {
         return sections.isEmpty
