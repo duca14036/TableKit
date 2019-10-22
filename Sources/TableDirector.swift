@@ -44,6 +44,9 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    public var sectionHeaderTextColor: UIColor?
+    public var sectionFooterTextColor: UIColor?
+    
     open var isEmpty: Bool {
         return sections.isEmpty
     }
@@ -257,6 +260,20 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
         return section.footerHeight
             ?? section.footerView?.frame.size.height
             ?? UITableView.automaticDimension
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard let color = self.sectionFooterTextColor else { return }
+        if let view = view as? UITableViewHeaderFooterView {
+            view.textLabel?.textColor = color
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let color = self.sectionHeaderTextColor else { return }
+        if let view = view as? UITableViewHeaderFooterView {
+            view.textLabel?.textColor = color
+        }
     }
     
     // MARK: UITableViewDataSource - Index
