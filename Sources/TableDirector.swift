@@ -381,7 +381,7 @@ open class TableDirector: NSObject, UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell.EditingStyle.delete
         }
         
-        return UITableViewCell.EditingStyle.none
+        return sections[indexPath.section].rows[indexPath.row].editingStyle ?? UITableViewCell.EditingStyle.none
     }
     
     public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {

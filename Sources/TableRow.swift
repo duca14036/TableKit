@@ -21,7 +21,7 @@
 import UIKit
 
 open class TableRow<CellType: ConfigurableCell>: Row where CellType: UITableViewCell {
-    
+    public var editingStyle: UITableViewCell.EditingStyle?
     public let item: CellType.CellData
     private lazy var actions = [String: [TableRowAction<CellType>]]()
     private(set) open var editingActions: [UITableViewRowAction]?

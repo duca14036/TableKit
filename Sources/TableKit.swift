@@ -37,6 +37,7 @@ public protocol RowConfigurable {
 public protocol RowActionable {
     
     var editingActions: [UITableViewRowAction]? { get }
+    var editingStyle: UITableViewCell.EditingStyle? { get set }
     func isEditingAllowed(forIndexPath indexPath: IndexPath) -> Bool
 
     func invoke(
@@ -82,6 +83,7 @@ public enum TableRowActionType {
     case move
     case accessoryButtonTap
     case custom(String)
+    case editingStyle(UITableViewCell.EditingStyle)
     
     var key: String {
         
